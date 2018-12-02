@@ -9,8 +9,15 @@ pipeline {
             steps {
                 sh 'gradle clean compileJava'
                 sh 'gradle clean test'
+                junit '**/test-results/test/*.xml'
                 sh 'gradle clean customFatJar'
                 sh 'cd build/libs/ && ls -la'
+            }
+
+            post {
+                always {
+                    junit 'build/reports/**/*.xml'
+                }
             }
         }
 
@@ -29,6 +36,7 @@ pipeline {
         }
 
         stage("ComponentTests") {
+            failFast true
             parallel {
                 stage('Api Tests') {
                     agent any
