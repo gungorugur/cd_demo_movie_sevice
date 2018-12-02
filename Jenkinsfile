@@ -5,7 +5,8 @@ pipeline {
         stage("Build") {
             agent {
                 docker { image 'openjdk:8-jdk-alpine' }
-            } steps {
+            }
+            steps {
                 sh './gradlew clean compileJava'
                 sh './gradlew test'
                 sh './gradlew clean customfatJar'
