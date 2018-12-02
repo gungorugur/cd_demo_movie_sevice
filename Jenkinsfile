@@ -4,12 +4,12 @@ pipeline {
     stages {
         stage("Build") {
             agent {
-                docker { image 'openjdk:8-jdk-alpine' }
+                docker { image 'gradle:jdk8-slim' }
             }
             steps {
-                sh './gradlew clean compileJava'
-                sh './gradlew test'
-                sh './gradlew clean customfatJar'
+                sh 'gradle clean compileJava'
+                sh 'gradle clean test'
+                sh 'gradle clean customFatJar'
                 sh 'cd build/libs/ && ls -la'
             }
         }
