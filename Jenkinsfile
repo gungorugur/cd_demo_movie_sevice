@@ -1,22 +1,22 @@
 pipeline {
     agent none
-
+    options { skipDefaultCheckout() }
     stages {
         stage("Build") {
             agent {
                 docker { image 'gradle:jdk8-slim' }
             }
             steps {
+                checkout scm
                 sh 'gradle clean compileJava'
                 sh 'gradle clean test'
                 junit '**/test-results/test/*.xml'
                 sh 'gradle clean customFatJar'
                 stash name: 'docker-compose-stack', includes: '.build/docker-compose-stack.yml'
                 stash name: 'dockerfile', includes: '.build/Dockerfile'
-                dir('build/libs'){
+                dir('build/libs') {
                     stash name: 'jar', includes: 'cd_demo_movie_sevice-all-1.0.jar'
                 }
-                sh 'ls -la'
             }
         }
 
@@ -25,7 +25,6 @@ pipeline {
             steps {
                 unstash 'jar'
                 sh 'ls -la'
-                sh 'cd .build && ls  -la'
                 echo 'build docker image with fatjar'
             }
         }
@@ -33,6 +32,7 @@ pipeline {
         stage("Deplo2QA") {
             agent any
             steps {
+                sh 'ls -la'
                 echo 'deploy to qa'
             }
         }
