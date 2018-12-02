@@ -1,6 +1,8 @@
 pipeline {
     agent none
-    options { skipDefaultCheckout() }
+    options {
+        skipDefaultCheckout true
+    }
     stages {
         stage("Build") {
             agent {
@@ -22,6 +24,9 @@ pipeline {
 
         stage("Package") {
             agent any
+            options {
+                skipDefaultCheckout true
+            }
             steps {
                 unstash 'jar'
                 sh 'ls -la'
