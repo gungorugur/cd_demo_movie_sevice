@@ -5,6 +5,7 @@ pipeline {
         stage("Build") {
             agent any
             steps {
+                sh 'ls -la'
                 echo 'compile'
                 echo 'unit test'
                 echo 'fatjar'
