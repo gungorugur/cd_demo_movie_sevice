@@ -3,12 +3,13 @@ pipeline {
 
     stages {
         stage("Build") {
-            agent any
-            steps {
-                sh 'ls -la'
-                echo 'compile'
-                echo 'unit test'
-                echo 'fatjar'
+            agent {
+                docker { image 'openjdk:8-jdk-alpine' }
+            } steps {
+                sh './gradlew clean compileJava'
+                sh './gradlew test'
+                sh ' ./gradlew clean customfatJar'
+                sh 'cd build/libs/ && ls -la'
             }
         }
 
@@ -18,7 +19,7 @@ pipeline {
                 echo 'build docker image with fatjar'
             }
         }
-        
+
         stage("Deplo2QA") {
             agent any
             steps {
