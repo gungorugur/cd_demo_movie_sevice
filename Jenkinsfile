@@ -15,14 +15,14 @@ pipeline {
                     sh 'ls -la'
                     stash name: 'jar', includes: 'cd_demo_movie_sevice-all-1.0.jar'
                 }
+                stash name: 'build', includes: '.build'
             }
         }
 
         stage("Package") {
             agent any
             steps {
-                unstash 'app'
-                unstash 'build'
+                unstash 'jar'
                 sh 'ls -la'
                 sh 'cd .build && ls  -la'
                 echo 'build docker image with fatjar'
