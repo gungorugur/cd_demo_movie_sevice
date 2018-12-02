@@ -11,7 +11,8 @@ pipeline {
                 sh 'gradle clean test'
                 junit '**/test-results/test/*.xml'
                 sh 'gradle clean customFatJar'
-                stash name: 'build', includes: '.build'
+                stash name: 'docker-compose-stack', includes: '.build/docker-compose-stack.yml'
+                stash name: 'dockerfile', includes: '.build/Dockerfile'
                 dir('build/libs'){
                     stash name: 'jar', includes: 'cd_demo_movie_sevice-all-1.0.jar'
                 }
