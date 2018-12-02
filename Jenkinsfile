@@ -11,13 +11,20 @@ pipeline {
                 sh 'gradle clean test'
                 junit '**/test-results/test/*.xml'
                 sh 'gradle clean customFatJar'
-                sh 'cd build/libs/ && ls -la'
+                stash includes: 'build/libs/cd_demo_movie_sevice-all-1.0.jar.jar', name: 'app'
+                stash includes: '.build', name: 'build'
+
+
             }
         }
 
         stage("Package") {
             agent any
             steps {
+                unstash 'app'
+                unstash 'build'
+                sh 'ls -la'
+                sh 'cd .build && ls  -la'
                 echo 'build docker image with fatjar'
             }
         }
