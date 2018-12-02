@@ -4,10 +4,7 @@ pipeline {
     stages {
         stage("Build") {
             agent {
-                docker {
-                    image 'gradle:jdk8-slim'
-                    args '-v $HOME/.gradle:/home/gradle/.gradle'
-                }
+                docker { image 'gradle:jdk8-slim' }
             }
             steps {
                 sh 'gradle clean compileJava'
