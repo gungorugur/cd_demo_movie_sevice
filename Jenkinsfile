@@ -11,11 +11,11 @@ pipeline {
                 sh 'gradle clean test'
                 junit '**/test-results/test/*.xml'
                 sh 'gradle clean customFatJar'
+                stash name: 'build', includes: '.build'
                 dir('build/libs'){
-                    sh 'ls -la'
                     stash name: 'jar', includes: 'cd_demo_movie_sevice-all-1.0.jar'
                 }
-                stash name: 'build', includes: '.build'
+                sh 'ls -la'
             }
         }
 
