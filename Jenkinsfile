@@ -8,7 +8,7 @@ pipeline {
             } steps {
                 sh './gradlew clean compileJava'
                 sh './gradlew test'
-                sh ' ./gradlew clean customfatJar'
+                sh './gradlew clean customfatJar'
                 sh 'cd build/libs/ && ls -la'
             }
         }
