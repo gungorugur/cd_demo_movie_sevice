@@ -13,12 +13,6 @@ pipeline {
                 sh 'gradle clean customFatJar'
                 sh 'cd build/libs/ && ls -la'
             }
-
-            post {
-                always {
-                    junit 'build/reports/**/*.xml'
-                }
-            }
         }
 
         stage("Package") {
