@@ -4,7 +4,10 @@ pipeline {
     stages {
         stage("Build") {
             agent {
-                docker { image 'openjdk:8-jdk-slim' }
+                docker {
+                    image 'openjdk:8-jdk-slim'
+                    args '-v /root/.gradle:/root/.gradle'
+                }
             }
             steps {
                 checkout scm
