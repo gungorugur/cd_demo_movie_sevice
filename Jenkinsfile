@@ -4,14 +4,14 @@ pipeline {
     stages {
         stage("Build") {
             agent {
-                docker { image 'gradle:jdk8-slim' }
+                docker { image 'openjdk:8-jdk-slim' }
             }
             steps {
                 checkout scm
-                sh 'gradle clean compileJava'
-                sh 'gradle clean test'
+                sh './gradlew clean compileJava'
+                sh './gradlew clean test'
                 junit '**/test-results/test/*.xml'
-                sh 'gradle clean customFatJar'
+                sh './gradlew clean customFatJar'
                 dir('build/libs') {
                     stash name: 'jar', includes: 'cd_demo_movie_sevice-all-1.0.jar'
                 }
