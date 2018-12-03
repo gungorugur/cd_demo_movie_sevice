@@ -16,7 +16,7 @@ pipeline {
                 junit '**/test-results/test/*.xml'
                 sh './gradlew clean customFatJar'
                 dir('.build') {
-                    stash name: 'dockerfile', includes: 'Dockerfile.tmpl'
+                    stash name: 'dockerfile', includes: 'Dockerfile'
                     stash name: 'docker-compose-stack', includes: 'docker-compose-stack.yml'
                 }
                 dir('build/libs') {
