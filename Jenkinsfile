@@ -19,12 +19,18 @@ pipeline {
         }
 
         stage("Package") {
-            agent any
-            steps {
-                unstash 'jar'
-                sh 'ls -la'
-                echo 'build docker image with fatjar'
-            }
+                agent {
+                    docker { 
+                        image 'docker:18.09'
+                        args '-v /var/run/docker.sock:/var/run/docker.sock'
+                        }
+                }            
+                steps {
+                    unstash 'jar'
+                    sh 'docker --version'
+                    sh 'ls -la'
+                    echo 'build docker image with fatjar'
+                }
         }
 
         stage("Deplo2QA") {
