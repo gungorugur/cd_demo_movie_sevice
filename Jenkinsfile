@@ -33,7 +33,7 @@ pipeline {
                 steps {
                     unstash 'dockerfile'
                     unstash 'jar'
-                    sh "ls - la"
+                    sh "ls -la"
                     sh "docker build . -t movie-service:${env.BUILD_ID}"
                     echo 'push image to internal nexus image repository'
                 }
