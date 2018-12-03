@@ -15,8 +15,10 @@ pipeline {
                 sh './gradlew clean test'
                 junit '**/test-results/test/*.xml'
                 sh './gradlew clean customFatJar'
+                stash name: 'dockerfile', includes: '.build/dockerfile'
+                stash name: 'docker-compose-stack', includes: '.build/docker-compose-stack.yml'
                 dir('build/libs') {
-                    stash name: 'jar', includes: 'cd_demo_movie_sevice-all-1.0.jar'
+                    stash name: 'jar', includes: 'cd_demo_movie_sevice-all-1.0-SNAPSHOT.jar'
                 }
             }
         }
@@ -29,10 +31,10 @@ pipeline {
                         }
                 }            
                 steps {
+                    unstash 'dockerfile'
                     unstash 'jar'
-                    sh 'docker --version'
-                    sh 'ls -la'
-                    echo 'build docker image with fatjar'
+                    sh "docker build . -t movie-service:${env.BUILD_ID}"
+                    echo 'push image to internal nexus image repository'
                 }
         }
 
