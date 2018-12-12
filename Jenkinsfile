@@ -37,8 +37,8 @@ pipeline {
                     unstash 'jar'
                     sh "ls -la"
                     sh "docker build . -t 51.15.240.50:8082/movie-service:${env.BUILD_ID}"
-                    sh "sudo docker login -u admin -p admin123 51.15.240.50:8082"
-                    sh "sudo docker push 51.15.240.50:8082/movie-service:${env.BUILD_ID}"
+                    sh "docker login -u admin -p admin123 51.15.240.50:8082"
+                    sh "docker push 51.15.240.50:8082/movie-service:${env.BUILD_ID}"
                 }
         }
 
