@@ -50,6 +50,12 @@ pipeline {
                 sh "sudo docker login -u admin -p admin123 51.15.240.50:8082"
                 sh "sudo docker pull 51.15.240.50:8082/movie-service:${env.BUILD_ID}"
             }
+
+            post { 
+                success { 
+                    sh "sudo docker image rm 51.15.240.50:8082/movie-service:${env.BUILD_ID}"
+                }
+            }
         }
 
         stage("ComponentTests") {
