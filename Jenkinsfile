@@ -43,10 +43,12 @@ pipeline {
         }
 
         stage("Deplo2QA") {
-            agent any
+            agent {label 'swarm-qa'}
             steps {
+                unstash 'docker-compose-stack'
                 sh 'ls -la'
-                echo 'deploy to qa'
+                sh "sudo docker login -u admin -p admin123 51.15.240.50:8082"
+                sh "sudo docker pull 51.15.240.50:8082/movie-service:${env.BUILD_ID}"
             }
         }
 
