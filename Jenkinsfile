@@ -1,6 +1,9 @@
 pipeline {
     agent none
     options { skipDefaultCheckout() }
+    environment {
+        VERSION = "${env.BUILD_ID}"
+    }
     stages {
         stage("Build") {
             agent {
@@ -36,9 +39,9 @@ pipeline {
                     unstash 'dockerfile'
                     unstash 'jar'
                     sh "ls -la"
-                    sh "docker build . -t 51.15.240.50:8082/movie-service:${env.BUILD_ID}"
+                    sh "docker build . -t 51.15.240.50:8082/movie-service:$VERSION"
                     sh "sudo docker login -u admin -p admin123 51.15.240.50:8082"
-                    sh "sudo docker push 51.15.240.50:8082/movie-service:${env.BUILD_ID}"
+                    sh "sudo docker push 51.15.240.50:8082/movie-service:$VERSION"
                 }
         }
 
@@ -48,12 +51,12 @@ pipeline {
                 unstash 'docker-compose-stack'
                 sh 'ls -la'
                 sh "sudo docker login -u admin -p admin123 51.15.240.50:8082"
-                sh "sudo docker pull 51.15.240.50:8082/movie-service:${env.BUILD_ID}"
+                sh "sudo docker pull 51.15.240.50:8082/movie-service:$VERSION"
             }
 
             post { 
                 success { 
-                    sh "sudo docker image rm 51.15.240.50:8082/movie-service:${env.BUILD_ID}"
+                    sh "sudo docker image rm 51.15.240.50:8082/movie-service:$VERSION"
                 }
             }
         }
