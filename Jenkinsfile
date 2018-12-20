@@ -51,9 +51,9 @@ pipeline {
                 unstash 'docker-compose-stack'
                 sh 'ls -la'
                 sh "sudo docker login -u admin -p admin123 51.15.240.50:8082"
-                sh "sudo docker pull 51.15.240.50:8082/movie-service:$VERSION"
+                sh "sudo VERSION=$VERSION docker stack deploy -c docker-compose-stack.yml --prune --with-registry-auth movie-service"
             }
-
+            
             post { 
                 success { 
                     sh "sudo docker image rm 51.15.240.50:8082/movie-service:$VERSION"
