@@ -1,11 +1,16 @@
 package com.ugungor.movie.interfaces;
 
+import java.util.Optional;
+
 public class Health {
 
-    public String message;
+    private String message;
+    private String version;
 
     private Health(String message) {
+
         this.message = message;
+        this.version = Optional.ofNullable(System.getenv("VERSION")).orElse("0");
     }
 
     public static Health create(String message) {
