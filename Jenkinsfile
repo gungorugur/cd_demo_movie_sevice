@@ -43,6 +43,12 @@ pipeline {
                     sh "sudo docker login -u admin -p admin123 51.15.240.50:8082"
                     sh "sudo docker push 51.15.240.50:8082/movie-service:$VERSION"
                 }
+
+                post { 
+                    success { 
+                        sh "sudo docker image rm 51.15.240.50:8082/movie-service:$VERSION"
+                    }
+                }
         }
 
         stage("Deplo2QA") {
@@ -52,12 +58,6 @@ pipeline {
                 sh 'ls -la'
                 sh "sudo docker login -u admin -p admin123 51.15.240.50:8082"
                 sh "sudo VERSION=$VERSION docker stack deploy -c docker-compose-stack.yml --prune --with-registry-auth movie-service"
-            }
-            
-            post { 
-                success { 
-                    sh "sudo docker image rm 51.15.240.50:8082/movie-service:$VERSION"
-                }
             }
         }
 
